@@ -12,12 +12,9 @@ router.register(r'posts/(?P<post_id>\d+)/comments',
 router.register('follow', FollowerViewSet, basename='follow')
 
 
-
-urlpatterns = [ 
+urlpatterns = [
     path('v1/', include(router.urls)),
     path('v1/', include('djoser.urls')),
     path('v1/', include('djoser.urls.jwt')),
 
-] 
-
- 
+]

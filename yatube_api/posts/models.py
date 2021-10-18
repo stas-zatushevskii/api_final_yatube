@@ -32,6 +32,7 @@ class Post(models.Model):
         verbose_name='Группа',
         help_text='Выберите группу'
     )
+
     def __str__(self):
         return self.text
 
