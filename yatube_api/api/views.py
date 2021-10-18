@@ -8,12 +8,14 @@ from rest_framework.response import Response
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer)
+from .pagination import PostsPagination
 
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = PostsPagination
 
     def list(self, request):
         post = Post.objects.all()
