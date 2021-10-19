@@ -1,15 +1,20 @@
-# TODO:  Напишите свой вариант
 from django.shortcuts import get_object_or_404
 from posts.models import Follow, Group, Post, User
-from rest_framework import filters, status, viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated
 
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer)
 
+
+class UpdateDeleteDestroyListViewSet(mixins.RetrieveModelMixin,
+                                    mixins.UpdateModelMixin,
+                                    mixins.DestroyModelMixin,
+                                    mixins.ListModelMixin,
+                                    viewsets.GenericViewSet):
+    pass
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
@@ -21,20 +26,10 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class GroupViewSet(UpdateDeleteDestroyListViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-
-    def list(self, request):
-        group = Group.objects.all()
-        serializer = self.get_serializer(group, many=True)
-        return Response(serializer.data)
-
-    def create(self, request):
-        response = {'message': 'Запрещено создание группы через APi'}
-        return Response(
-            response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
