@@ -9,12 +9,15 @@ from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer)
 
 
-class UpdateDeleteDestroyListViewSet(mixins.RetrieveModelMixin,
-                                    mixins.UpdateModelMixin,
-                                    mixins.DestroyModelMixin,
-                                    mixins.ListModelMixin,
-                                    viewsets.GenericViewSet):
+class UpdateDeleteDestroyListViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+        viewsets.GenericViewSet):
+
     pass
+
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
