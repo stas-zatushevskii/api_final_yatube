@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer)
+from posts.models import Follow, Group, Post, User
 
 
 class UpdateDeleteDestroyListViewSet(
@@ -56,8 +57,7 @@ class FollowerViewSet(viewsets.ModelViewSet):
     search_fields = ('following__username',)
 
     def get_queryset(self):
-        user = get_object_or_404(User, id=self.request.user.id)
-        author = Follow.objects.filter(user=user)
+        author = Follow.objects.filter(user=self.request.user)
         return author
 
     def perform_create(self, serializer):
